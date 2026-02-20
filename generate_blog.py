@@ -1,6 +1,6 @@
 import os
 import json
-from genai import Client # New Library
+from google import genai
 from datetime import datetime
 import re
 
@@ -10,7 +10,7 @@ if not api_key:
     print("Error: GEMINI_API_KEY not found.")
     exit(1)
 
-client = Client(api_key=api_key)
+client = genai.Client(api_key=api_key)
 MODEL_ID = "gemini-1.5-flash"
 
 # 2. History Check (Fixed for your Unicode error)
