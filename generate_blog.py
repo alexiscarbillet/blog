@@ -10,13 +10,12 @@ if not api_key:
     print("Error: GEMINI_API_KEY not found.")
     exit(1)
 
-client = genai.Client(api_key=api_key)
-MODEL_ID = "gemini-1.5-flash"
+# Initialize the client
+client = genai.Client(api_key=api_key, http_options={'api_version': 'v1'})
 
-# 2. History Check (Fixed for your Unicode error)
+# 2. History Check
 HISTORY_FILE = "topic_history.json"
 history = []
-
 if os.path.exists(HISTORY_FILE):
     try:
         with open(HISTORY_FILE, "r", encoding="utf-8-sig") as f:
@@ -45,12 +44,16 @@ description: <A 1-sentence SEO-friendly summary>
 """
 
 # 4. Generate Content
-print("Consulting Gemini via New SDK...")
-response = client.models.generate_content(
-    model=MODEL_ID, 
-    contents=prompt
-)
-content = response.text
+print("Consulting Gemini 1.5 Flash...")
+try:
+    response = client.models.generate_content(
+        model='gemini-2.0-flash', 
+        contents=prompt
+    )
+    content = response.text
+except Exception as e:
+    print(f"API Error: {e}")
+    exit(1)
 
 # Extract Title for filename
 try:
@@ -59,7 +62,7 @@ try:
 except Exception:
     clean_title = f"post_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 
-# Save the post - Ensure path is docs/posts/
+# Save the post
 os.makedirs("docs/posts", exist_ok=True)
 filename = f"docs/posts/{clean_title}.md"
 
