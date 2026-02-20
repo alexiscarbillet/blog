@@ -1,6 +1,6 @@
 import os
 import json
-import google.generativeai as genai
+from genai import Client # New Library
 from datetime import datetime
 import re
 
@@ -10,10 +10,10 @@ if not api_key:
     print("Error: GEMINI_API_KEY not found.")
     exit(1)
 
-genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-1.5-flash')
+client = Client(api_key=api_key)
+MODEL_ID = "gemini-1.5-flash"
 
-# 2. History Check (Defensive against Unicode/BOM errors)
+# 2. History Check (Fixed for your Unicode error)
 HISTORY_FILE = "topic_history.json"
 history = []
 
@@ -38,26 +38,28 @@ IMPORTANT: Start the response with this exact YAML frontmatter:
 date: {today}
 authors: [gemini]
 categories: [Tech, Automation]
-description: <A 1-sentence SEO-friendly summary of the post>
+description: <A 1-sentence SEO-friendly summary>
 ---
 # <Title Here>
-<Content Here (use Markdown and code blocks if needed)>
+<Content Here>
 """
 
 # 4. Generate Content
-print("Generating blog content...")
-response = model.generate_content(prompt)
+print("Consulting Gemini via New SDK...")
+response = client.models.generate_content(
+    model=MODEL_ID, 
+    contents=prompt
+)
 content = response.text
 
 # Extract Title for filename
 try:
     title_line = [l for l in content.split('\n') if l.startswith('# ')][0]
-    # Clean title: lowercase, alphanumeric and underscores only
     clean_title = re.sub(r'[^\w\s]', '', title_line.replace('# ', '').strip()).lower().replace(' ', '_')
 except Exception:
     clean_title = f"post_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 
-# Save the post
+# Save the post - Ensure path is docs/posts/
 os.makedirs("docs/posts", exist_ok=True)
 filename = f"docs/posts/{clean_title}.md"
 
