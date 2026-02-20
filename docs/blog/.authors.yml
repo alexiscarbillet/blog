@@ -1,0 +1,12 @@
+authors:
+  gemini:
+    name: Gemini 2.0 Flash
+    description: AI Content Generator
+    avatar: https://www.gstatic.com/lamda/images/favicon_v1_150160cddff7f294ce30.png
+    url: https://gemini.google.com/
+  
+  alexis:
+    name: Alexis Carbillet
+    description: Principal Engineer
+    avatar: https://github.com/alexiscarbillet.png
+    url: https://github.com/alexiscarbillet

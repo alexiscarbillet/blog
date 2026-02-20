@@ -1,20 +1,8 @@
 site_name: Tech Insights
 site_url: https://blog.alexis-carbillet.com/
+
 theme:
   name: material
-  palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: indigo
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: indigo
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
   features:
     - navigation.instant
     - navigation.tracking
@@ -27,10 +15,11 @@ plugins:
   - minify:
       minify_html: true
   - blog:
-      post_dir: posts
       blog_dir: blog
+      post_dir: posts
       pagination_per_page: 5
+      authors_file: "{blog}/.authors.yml" # Forces it to find your author file
 
 nav:
   - Home: index.md
-  - Blog: blog/
+  - Blog: blog/index.md
