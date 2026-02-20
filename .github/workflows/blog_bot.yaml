@@ -1,6 +1,9 @@
 name: Weekly AI Blog Post
 
 on:
+  push:
+    branches:
+      - main  # Trigger now so we can debug!
   schedule:
     - cron: '0 0 * * 1' # Every Monday at 00:00 UTC
 
