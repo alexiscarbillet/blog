@@ -36,7 +36,7 @@ Previous topics: {", ".join(history[-5:])}
 """
 
 print("Generating content...")
-response = client.models.generate_content(model="gemini-1.5-flash", contents=prompt)
+response = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
 raw_text = response.text.strip()
 
 # --- Post-Processing / Sanitization ---
