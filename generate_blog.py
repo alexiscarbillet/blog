@@ -2,44 +2,71 @@ import os
 import json
 import google.generativeai as genai
 from datetime import datetime
+import re
 
 # 1. Setup
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+api_key = os.environ.get("GEMINI_API_KEY")
+if not api_key:
+    print("Error: GEMINI_API_KEY not found.")
+    exit(1)
+
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
-# 2. History Check
+# 2. History Check (Defensive against Unicode/BOM errors)
 HISTORY_FILE = "topic_history.json"
-with open(HISTORY_FILE, "r") as f:
-    history = json.load(f)
+history = []
 
-# 3. AI Prompt with Frontmatter Instructions
+if os.path.exists(HISTORY_FILE):
+    try:
+        with open(HISTORY_FILE, "r", encoding="utf-8-sig") as f:
+            history = json.load(f)
+    except Exception as e:
+        print(f"Warning: History file issue ({e}). Starting fresh.")
+        history = []
+
+# 3. AI Prompt
+history_str = ", ".join(history) if history else "None"
+today = datetime.now().strftime('%Y-%m-%d')
+
 prompt = f"""
-Generate a technical IT blog post. 
-Previous topics to avoid: {", ".join(history)}.
+Generate a professional technical IT blog post. 
+Previous topics to avoid: {history_str}.
 
-IMPORTANT: Start the response with this exact YAML frontmatter format:
+IMPORTANT: Start the response with this exact YAML frontmatter:
 ---
-date: {datetime.now().strftime('%Y-%m-%d')}
+date: {today}
 authors: [gemini]
 categories: [Tech, Automation]
+description: <A 1-sentence SEO-friendly summary of the post>
 ---
 # <Title Here>
-<Content Here>
+<Content Here (use Markdown and code blocks if needed)>
 """
 
-# 4. Generate & Save
+# 4. Generate Content
+print("Generating blog content...")
 response = model.generate_content(prompt)
 content = response.text
 
-# Use the title for the filename (simplified)
-title_line = [l for l in content.split('\n') if l.startswith('# ')][0]
-clean_title = title_line.replace('# ', '').strip().replace(' ', '_').lower()
+# Extract Title for filename
+try:
+    title_line = [l for l in content.split('\n') if l.startswith('# ')][0]
+    # Clean title: lowercase, alphanumeric and underscores only
+    clean_title = re.sub(r'[^\w\s]', '', title_line.replace('# ', '').strip()).lower().replace(' ', '_')
+except Exception:
+    clean_title = f"post_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+
+# Save the post
+os.makedirs("docs/posts", exist_ok=True)
 filename = f"docs/posts/{clean_title}.md"
 
-with open(filename, "w") as f:
+with open(filename, "w", encoding="utf-8") as f:
     f.write(content)
 
 # 5. Update History
 history.append(clean_title)
-with open(HISTORY_FILE, "w") as f:
+with open(HISTORY_FILE, "w", encoding="utf-8") as f:
     json.dump(history, f, indent=4)
+
+print(f"Successfully generated: {filename}")
