@@ -27,7 +27,7 @@ plugins:
   - minify:
       minify_html: true
   - blog:
-      post_dir: docs/posts
+      post_dir: posts
       blog_dir: blog
       pagination_per_page: 5
 
