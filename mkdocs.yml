@@ -20,6 +20,7 @@ theme:
     - navigation.tracking
     - content.code.copy
     - blog
+    - navigation.indexes
 
 plugins:
   - search
