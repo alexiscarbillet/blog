@@ -15,7 +15,7 @@ plugins:
   - minify:
       minify_html: true
   - blog:
-      blog_dir: blog
+      blog_dir: .
       post_dir: posts
       pagination_per_page: 5
       authors_file: "{blog}/.authors.yml" # Forces it to find your author file
