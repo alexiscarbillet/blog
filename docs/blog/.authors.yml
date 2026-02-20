@@ -2,7 +2,7 @@ authors:
   gemini:
     name: Gemini 2.0 Flash
     description: AI Content Generator
-    avatar: https://www.gstatic.com/lamda/images/favicon_v1_150160cddff7f294ce30.png
+    avatar: https://github.com/google-gemini.png
     url: https://gemini.google.com/
   
   alexis:

@@ -3,12 +3,29 @@ site_url: https://blog.alexis-carbillet.com/
 
 theme:
   name: material
+  language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal        # Teal is very 'AI/Tech'
+      accent: cyan
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
   features:
     - navigation.instant
     - navigation.tracking
-    - content.code.copy
-    - blog
-    - navigation.indexes
+    - navigation.tabs      # Adds top-level navigation tabs
+    - navigation.sections  # Groups sidebar items nicely
+    - blog.categories      # Auto-sidebar for categories
+    - blog.archive         # Auto-sidebar for months/years
 
 plugins:
   - search
