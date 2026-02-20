@@ -6,11 +6,6 @@ import re
 
 # 1. Setup
 api_key = os.environ.get("GEMINI_API_KEY")
-if not api_key:
-    print("Error: GEMINI_API_KEY not found.")
-    exit(1)
-
-# Initialize the client
 client = genai.Client(api_key=api_key, http_options={'api_version': 'v1'})
 
 # 2. History Check
@@ -20,58 +15,47 @@ if os.path.exists(HISTORY_FILE):
     try:
         with open(HISTORY_FILE, "r", encoding="utf-8-sig") as f:
             history = json.load(f)
-    except Exception as e:
-        print(f"Warning: History file issue ({e}). Starting fresh.")
+    except:
         history = []
 
-# 3. AI Prompt
-history_str = ", ".join(history) if history else "None"
+# 3. Prompt
 today = datetime.now().strftime('%Y-%m-%d')
+prompt = f"Write a technical blog post. Start with YAML frontmatter (date: {today}, authors: [gemini], categories: [Tech]). Then # Title and content."
 
-prompt = f"""
-Generate a professional technical IT blog post. 
-Previous topics to avoid: {history_str}.
+# 4. Generate & Sanitize
+print("Consulting Gemini...")
+response = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
+raw_text = response.text
 
-IMPORTANT: Start the response with this exact YAML frontmatter:
----
-date: {today}
-authors: [gemini]
-categories: [Tech, Automation]
-description: <A 1-sentence SEO-friendly summary>
----
-# <Title Here>
-<Content Here>
-"""
+# --- THE FIX: Find the frontmatter and force it to the top ---
+# This regex looks for anything between two sets of ---
+match = re.search(r'---\s*\n(.*?)\n\s*---', raw_text, re.DOTALL)
+if match:
+    metadata = match.group(0) # The full --- block
+    content = raw_text.replace(metadata, "").strip()
+    # Remove any leading triple backticks if the AI wrapped the code
+    content = re.sub(r'^```markdown\s*', '', content)
+    content = re.sub(r'```$', '', content)
+    
+    final_output = f"{metadata}\n\n{content}"
+else:
+    # Emergency fallback if AI failed to generate metadata
+    final_output = f"---\ndate: {today}\nauthors: [gemini]\ncategories: [Tech]\n---\n\n{raw_text}"
 
-# 4. Generate Content
-print("Consulting Gemini 1.5 Flash...")
-try:
-    response = client.models.generate_content(
-        model='gemini-2.0-flash', 
-        contents=prompt
-    )
-    content = response.text
-except Exception as e:
-    print(f"API Error: {e}")
-    exit(1)
+# 5. Extract Title for Slug
+title_match = re.search(r'^#\s+(.*)', final_output, re.MULTILINE)
+title_text = title_match.group(1) if title_match else f"post_{today}"
+slug = re.sub(r'[^\w\s]', '', title_text).lower().replace(' ', '_')
 
-# Extract Title for filename
-try:
-    title_line = [l for l in content.split('\n') if l.startswith('# ')][0]
-    clean_title = re.sub(r'[^\w\s]', '', title_line.replace('# ', '').strip()).lower().replace(' ', '_')
-except Exception:
-    clean_title = f"post_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-
-# Save the post
+# 6. Save
 os.makedirs("docs/posts", exist_ok=True)
-filename = f"docs/posts/{clean_title}.md"
-
+filename = f"docs/posts/{slug}.md"
 with open(filename, "w", encoding="utf-8") as f:
-    f.write(content)
+    f.write(final_output)
 
-# 5. Update History
-history.append(clean_title)
+# 7. History
+history.append(slug)
 with open(HISTORY_FILE, "w", encoding="utf-8") as f:
     json.dump(history, f, indent=4)
 
-print(f"Successfully generated: {filename}")
+print(f"Verified & Saved: {filename}")
