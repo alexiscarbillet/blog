@@ -1,0 +1,11 @@
+site_name: Tech Insights
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - blog.archive
+    - blog.categories
+
+plugins:
+  - blog:
+      post_dir: docs/posts
