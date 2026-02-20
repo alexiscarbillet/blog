@@ -1,4 +1,5 @@
 site_name: Tech Insights
+site_url: https://blog.alexis-carbillet.com/
 theme:
   name: material
   palette:
