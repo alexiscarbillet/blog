@@ -6,31 +6,30 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
+      primary: teal
       toggle:
-        icon: material/brightness-7
+        icon: material/weather-sunny
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: indigo
+      primary: teal
       toggle:
-        icon: material/brightness-4
+        icon: material/weather-night
         name: Switch to light mode
   features:
     - navigation.instant
-    - navigation.tracking
     - navigation.indexes
     - blog.categories
     - blog.archive
 
 plugins:
   - search
-  - minify:
-      minify_html: true
   - blog:
-      blog_dir: .
+      blog_dir: blog
       post_dir: posts
-      post_excerpt: optional  # This activates the logic
+      # FIX: This points exactly to where your author file is
+      authors_file: blog/.authors.yml 
+      post_excerpt: optional
       pagination_per_page: 5
 
 nav:

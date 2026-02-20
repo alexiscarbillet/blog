@@ -4,12 +4,13 @@ import re
 from google import genai
 from datetime import datetime
 
-# --- Setup ---
+# --- 1. Setup ---
+# Ensure you have 'pip install google-genai' in your workflow
 api_key = os.environ.get("GEMINI_API_KEY")
-client = genai.Client(api_key=api_key, http_options={'api_version': 'v1'})
+client = genai.Client(api_key=api_key)
 HISTORY_FILE = "topic_history.json"
 
-# --- Load History ---
+# --- 2. Load History ---
 history = []
 if os.path.exists(HISTORY_FILE):
     try:
@@ -17,10 +18,10 @@ if os.path.exists(HISTORY_FILE):
             history = json.load(f)
     except: pass
 
-# --- AI Prompt ---
+# --- 3. Gemini 2.0 Prompt ---
 today = datetime.now().strftime('%Y-%m-%d')
 prompt = f"""
-Write a technical blog post. 
+Write a technical blog post for a high-end engineering blog.
 Start with this EXACT frontmatter:
 ---
 date: {today}
@@ -29,41 +30,43 @@ categories: [Tech]
 ---
 
 Rules:
-1. Do NOT include a # Title in the text.
-2. The very first line after the frontmatter must be a catchy title but WITHOUT the '#' symbol.
-3. Write one intro paragraph, then insert the exact tag: 4. Continue with ## and ### headers for the body.
-Previous topics: {", ".join(history[-5:])}
+1. Do NOT include a Markdown title (no # Title). 
+2. The first line after the frontmatter should be the title in plain text.
+3. Write one engaging intro paragraph, then insert the exact tag: 4. Use ## and ### for sections.
+5. Provide high-quality code examples if relevant.
+Recent topics to avoid repeating: {", ".join(history[-5:])}
 """
 
-print("Generating content...")
-response = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
+print("Consulting Gemini 2.0 Flash...")
+response = client.models.generate_content(
+    model="gemini-2.0-flash", 
+    contents=prompt
+)
 raw_text = response.text.strip()
 
-# --- Post-Processing / Sanitization ---
+# --- 4. Sanitization ---
 
-# 1. Ensure frontmatter is at the top and clean
+# Ensure frontmatter is at the absolute top
 if not raw_text.startswith("---"):
     raw_text = re.sub(r'^.*?(?=---)', '', raw_text, flags=re.DOTALL)
 
-# 2. Extract the first non-empty line as the Title for the slug
+# Extract a slug from the first non-YAML line
 lines = [l for l in raw_text.split('\n') if l.strip() and '---' not in l]
-title_suggestion = lines[0].replace('#', '').strip() if lines else f"post_{today}"
+title_text = lines[0].replace('#', '').strip() if lines else f"post_{today}"
+slug = re.sub(r'[^\w\s]', '', title_text).lower().replace(' ', '_')
 
-# 3. Final Content Cleaning: Remove any # Headers that match the title
-# This prevents the "Double Title" on the website
+# Prevent "Double Title" by removing any # Header that matches the title
 clean_content = re.sub(r'^#\s+.*?\n', '', raw_text, count=1, flags=re.MULTILINE)
 
-# 4. Generate filename
-slug = re.sub(r'[^\w\s]', '', title_suggestion).lower().replace(' ', '_')
-filename = f"docs/posts/{slug}.md"
-
-# --- Save ---
+# --- 5. Save ---
 os.makedirs("docs/posts", exist_ok=True)
+filename = f"docs/posts/{slug}.md"
 with open(filename, "w", encoding="utf-8") as f:
     f.write(clean_content)
 
+# Update History
 history.append(slug)
 with open(HISTORY_FILE, "w") as f:
     json.dump(history, f, indent=4)
 
-print(f"Successfully created: {filename}")
+print(f"Post generated: {filename}")
