@@ -18,5 +18,6 @@
     "consistency_without_the_wait_architecting_for_high_availability_in_distributed_systems",
     "beyond_the_browser_leveraging_webassembly_for_high-performance_microservices",
     "precision_at_scale_engineering_a_high-fidelity_observability_pipeline",
-    "scaling_the_neural_edge_optimized_inference_for_on-device_intelligence"
+    "scaling_the_neural_edge_optimized_inference_for_on-device_intelligence",
+    "the_chaos_sandbox_engineering_determinism_into_distributed_system_testing"
 ]
