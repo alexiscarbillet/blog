@@ -21,5 +21,6 @@
     "scaling_the_neural_edge_optimized_inference_for_on-device_intelligence",
     "the_chaos_sandbox_engineering_determinism_into_distributed_system_testing",
     "beyond_the_ledger_optimizing_immutable_event_stores_for_high-throughput_pipelines",
-    "the_elastic_mesh_rethinking_service_discovery_in_ephemeral_environments"
+    "the_elastic_mesh_rethinking_service_discovery_in_ephemeral_environments",
+    "shifting_left_on_database_performance_integrating_query_profiling_into_cicd"
 ]
