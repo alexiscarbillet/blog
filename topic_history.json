@@ -23,5 +23,6 @@
     "beyond_the_ledger_optimizing_immutable_event_stores_for_high-throughput_pipelines",
     "the_elastic_mesh_rethinking_service_discovery_in_ephemeral_environments",
     "shifting_left_on_database_performance_integrating_query_profiling_into_cicd",
-    "architecting_for_durability_mastering_semantic_versioning_in_distributed_schema_evolution"
+    "architecting_for_durability_mastering_semantic_versioning_in_distributed_schema_evolution",
+    "balancing_the_signal_and_the_noise_adaptive_sampling_in_high-throughput_microservices"
 ]
