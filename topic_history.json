@@ -24,5 +24,6 @@
     "the_elastic_mesh_rethinking_service_discovery_in_ephemeral_environments",
     "shifting_left_on_database_performance_integrating_query_profiling_into_cicd",
     "architecting_for_durability_mastering_semantic_versioning_in_distributed_schema_evolution",
-    "balancing_the_signal_and_the_noise_adaptive_sampling_in_high-throughput_microservices"
+    "balancing_the_signal_and_the_noise_adaptive_sampling_in_high-throughput_microservices",
+    "beyond_the_container_streamlining_cloud-native_workloads_with_webassembly"
 ]
