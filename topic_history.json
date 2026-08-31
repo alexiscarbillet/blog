@@ -28,5 +28,6 @@
     "beyond_the_container_streamlining_cloud-native_workloads_with_webassembly",
     "the_silence_of_the_gc_tuning_managed_runtimes_for_low-latency_systems",
     "deterministic_retries_why_idempotency_keys_are_the_bedrock_of_reliable_payments",
-    "breaking_the_throughput_ceiling_the_power_of_zero-copy_networking"
+    "breaking_the_throughput_ceiling_the_power_of_zero-copy_networking",
+    "beyond_the_mirror_orchestrating_shadow_traffic_for_risk-free_deployments"
 ]
