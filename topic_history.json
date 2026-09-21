@@ -30,5 +30,6 @@
     "deterministic_retries_why_idempotency_keys_are_the_bedrock_of_reliable_payments",
     "breaking_the_throughput_ceiling_the_power_of_zero-copy_networking",
     "beyond_the_mirror_orchestrating_shadow_traffic_for_risk-free_deployments",
-    "taming_the_chaos_strategic_retries_and_dead_letter_patterns_in_distributed_systems"
+    "taming_the_chaos_strategic_retries_and_dead_letter_patterns_in_distributed_systems",
+    "the_cell-based_evolution_architecting_for_global_scale_and_blast_radius_isolation"
 ]
