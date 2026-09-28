@@ -31,5 +31,6 @@
     "breaking_the_throughput_ceiling_the_power_of_zero-copy_networking",
     "beyond_the_mirror_orchestrating_shadow_traffic_for_risk-free_deployments",
     "taming_the_chaos_strategic_retries_and_dead_letter_patterns_in_distributed_systems",
-    "the_cell-based_evolution_architecting_for_global_scale_and_blast_radius_isolation"
+    "the_cell-based_evolution_architecting_for_global_scale_and_blast_radius_isolation",
+    "the_alchemy_of_state_hardening_distributed_workflows_with_type-safe_state_machines"
 ]
