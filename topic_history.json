@@ -33,5 +33,6 @@
     "taming_the_chaos_strategic_retries_and_dead_letter_patterns_in_distributed_systems",
     "the_cell-based_evolution_architecting_for_global_scale_and_blast_radius_isolation",
     "the_alchemy_of_state_hardening_distributed_workflows_with_type-safe_state_machines",
-    "the_edge_of_efficiency_why_webassembly_is_the_new_cloud_primitive"
+    "the_edge_of_efficiency_why_webassembly_is_the_new_cloud_primitive",
+    "throttling_with_intelligence_moving_beyond_static_rate_limits"
 ]
