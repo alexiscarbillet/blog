@@ -38,5 +38,6 @@
     "beyond_the_open_door_why_your_observability_pipeline_needs_zero-trust_architecture",
     "shadow_databases_the_silent_guardian_of_zero-downtime_schema_migrations",
     "beyond_the_nearest_neighbor_optimizing_hnsw_for_low-latency_vector_retrieval",
-    "beyond_the_api_call_navigating_the_chaos_of_distributed_transactions_with_sagas"
+    "beyond_the_api_call_navigating_the_chaos_of_distributed_transactions_with_sagas",
+    "building_resilient_systems_the_power_of_idempotency"
 ]
