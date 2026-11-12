@@ -30,6 +30,7 @@ jobs:
       - name: Run Generator
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_GENAI_API_VERSION: v1beta
         run: python generate_blog.py
 
       - name: Commit and Push
